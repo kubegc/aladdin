@@ -32,7 +32,7 @@ public class PodObserver extends KubernetesWatcher {
 	public void doAdded(JsonNode node) {
 		
 		if (node.get("spec").has("nodeName") ||
-				!"aladdin".equals(getSchdulerName(node))) {
+				!"aladdin-scheduler".equals(getSchdulerName(node))) {
 			return;
 		}
 		
@@ -44,14 +44,16 @@ public class PodObserver extends KubernetesWatcher {
 		long end   = System.currentTimeMillis();
 		
 		{
-			ObjectNode annotations = node.has("annotations") 
-						? (ObjectNode) node.get("annotations") 
+			ObjectNode annotations = node.get("metadata").has("annotations") 
+						? (ObjectNode) node.get("metadata").get("annotations") 
 							: new ObjectMapper().createObjectNode();
-			annotations.put("schedulerTime", (end - start) + "ms");
-			((ObjectNode) node).set("annotations", annotations);
+			annotations.put("schedulerLatency", (end - start) + "ms");
+			((ObjectNode) node.get("metadata")).remove("annotations");
+			((ObjectNode) node.get("metadata")).set("annotations", annotations);
 		}
 		
 		try {
+			kubeClient.updateResource(node);
 			kubeClient.bindingResource(node, host);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -78,7 +80,7 @@ public class PodObserver extends KubernetesWatcher {
 	}
 	
 	protected String getSchedulerType(JsonNode node) {
-		return (node.has("annotations") && node.get("annotations").has("schedulerType"))
-					? node.get("annotations").get("schedulerType").asText() : "queue";
+		return (node.get("metadata").has("annotations") && node.get("metadata").get("annotations").has("schedulerType"))
+					? node.get("metadata").get("annotations").get("schedulerType").asText() : "queue";
 	}
 }

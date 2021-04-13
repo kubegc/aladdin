@@ -13,8 +13,8 @@ import com.github.kubesys.KubernetesClient;
  */
 public class FlowBasedScheduler extends Scheduler {
 
-	public FlowBasedScheduler(KubernetesClient client) {
-		super(client);
+	public FlowBasedScheduler(KubernetesClient client, String pkg) throws Exception {
+		super(client, pkg);
 	}
 
 	public String doScheduling(JsonNode pod) {
