@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.doslab</groupId>
+  <artifactId>aladdin</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>aladdin</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+		<kubeclient.version>5.0.0</kubeclient.version>
+	</properties>
+
+  <dependencies>
+    <dependency>
+			<groupId>com.github.kubesys</groupId>
+			<artifactId>kubernetes-client</artifactId>
+			<version>${kubeclient.version}</version>
+		</dependency>
+  </dependencies>
+  
+  <repositories>
+		<repository>
+			<id>pdos-repos</id>
+			<name>PDOS Releases</name>
+			<url>http://39.106.40.190:31021/repository/maven-public/</url>
+		</repository>
+	</repositories>
+</project>
