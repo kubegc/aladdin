@@ -1,7 +1,7 @@
 /**
  * Copyright (2021, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.doslab.aladdin.core.observers;
+package com.github.doslab.aladdin.core.watchers;
 
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,11 +13,11 @@ import com.github.kubesys.KubernetesWatcher;
  * @author wuheng@iscas.ac.cn
  * @date   2021Äê4ÔÂ13ÈÕ
  */
-public class NodeObserver extends KubernetesWatcher {
+public class NodeWatcher extends KubernetesWatcher {
 
 	protected final NodeCache nodeCache;
 	
-	public NodeObserver(KubernetesClient kubeClient) throws Exception {
+	public NodeWatcher(KubernetesClient kubeClient) throws Exception {
 		super(kubeClient);
 		this.nodeCache = NodeCache.createNodeCache(kubeClient);
 	}

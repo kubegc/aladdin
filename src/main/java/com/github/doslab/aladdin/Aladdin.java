@@ -5,8 +5,8 @@ package com.github.doslab.aladdin;
 
 import com.github.doslab.aladdin.core.impl.FlowBasedScheduler;
 import com.github.doslab.aladdin.core.impl.QueueBasedScheduler;
-import com.github.doslab.aladdin.core.observers.NodeObserver;
-import com.github.doslab.aladdin.core.observers.PodObserver;
+import com.github.doslab.aladdin.core.watchers.NodeWatcher;
+import com.github.doslab.aladdin.core.watchers.PodWatcher;
 import com.github.kubesys.KubernetesClient;
 
 /**
@@ -30,8 +30,8 @@ public class Aladdin {
 				System.getenv("token"));
 		
 		
-		client.watchResources("Node", new NodeObserver(client));
-		client.watchResources("Pod", new PodObserver(client, 
+		client.watchResources("Node", new NodeWatcher(client));
+		client.watchResources("Pod", new PodWatcher(client, 
 							new QueueBasedScheduler(client, "com.github.doslab.aladdin.core.plugins.queue"), 
 							new FlowBasedScheduler(client, "com.github.doslab.aladdin.core.plugins.flow")));
     }

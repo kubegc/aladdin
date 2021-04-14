@@ -1,7 +1,7 @@
 /**
  * Copyright (2021, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.doslab.aladdin.core.observers;
+package com.github.doslab.aladdin.core.watchers;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,11 +17,11 @@ import com.github.kubesys.KubernetesWatcher;
  * @author wuheng@iscas.ac.cn
  * @date   2021Äê4ÔÂ13ÈÕ
  */
-public class PodObserver extends KubernetesWatcher {
+public class PodWatcher extends KubernetesWatcher {
 
 	protected final Map<String, Scheduler> schedulers = new HashMap<>();
 	
-	public PodObserver(KubernetesClient kubeClient, 
+	public PodWatcher(KubernetesClient kubeClient, 
 			      	Scheduler queue, Scheduler flow) {
 		super(kubeClient);
 		schedulers.put("queue", queue);
