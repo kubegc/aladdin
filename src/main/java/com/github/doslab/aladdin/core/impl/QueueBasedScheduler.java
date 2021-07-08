@@ -13,12 +13,11 @@ import com.github.kubesys.KubernetesClient;
  */
 public class QueueBasedScheduler extends Scheduler {
 
-	public QueueBasedScheduler(KubernetesClient client, String pkg) throws Exception {
-		super(client, pkg);
+	public QueueBasedScheduler(KubernetesClient client, String name) throws Exception {
+		super(client, name);
 	}
 
 	public String doScheduling(JsonNode pod) {
-		return getNodeSelector(pod).getHost(nodeCache.getNodes());
+		return null;
 	}
-
 }

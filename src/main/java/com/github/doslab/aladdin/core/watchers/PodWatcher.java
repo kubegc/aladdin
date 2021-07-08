@@ -3,9 +3,6 @@
  */
 package com.github.doslab.aladdin.core.watchers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -19,13 +16,12 @@ import com.github.kubesys.KubernetesWatcher;
  */
 public class PodWatcher extends KubernetesWatcher {
 
-	protected final Map<String, Scheduler> schedulers = new HashMap<>();
+	protected final Scheduler scheduler;
 	
 	public PodWatcher(KubernetesClient kubeClient, 
-			      	Scheduler queue, Scheduler flow) {
+			      	Scheduler scheduler) {
 		super(kubeClient);
-		schedulers.put("queue", queue);
-		schedulers.put("flow", flow);
+		this.scheduler = scheduler;
 	}
 
 	@Override
@@ -38,8 +34,7 @@ public class PodWatcher extends KubernetesWatcher {
 		
 		long start = System.currentTimeMillis();
 		
-		String host = schedulers.get(getSchedulerType(node))
-						.doScheduling(node);
+		String host = scheduler.doScheduling(node);
 		
 		long end   = System.currentTimeMillis();
 		
