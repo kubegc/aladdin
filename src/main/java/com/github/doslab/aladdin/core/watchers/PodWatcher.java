@@ -30,13 +30,15 @@ public class PodWatcher extends KubernetesWatcher {
 	@Override
 	public void doAdded(JsonNode node) {
 		
-		if ((node.get("spec").has("schdulerName")
-				&& node.get("spec").get("schdulerName")
-						.asText().equals(scheduler.getName())) 
+		if (node.get("spec").has("schedulerName")
+				&& node.get("spec").get("schedulerName")
+						.asText().equals(scheduler.getName())
 				&& !node.get("spec").has("nodeName")) {
 			try {
 				String host = scheduler.doScheduling(node);
 				kubeClient.bindingResource(node, host);
+				System.out.println("bind " + node.get("metadata")
+							.get("name").asText() + " to " + host);
 			} catch (Exception e) {
 				System.err.println(e);
 			}
