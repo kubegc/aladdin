@@ -4,8 +4,6 @@
 package com.github.doslab.aladdin.core.watchers;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.doslab.aladdin.core.Scheduler;
 import com.github.kubesys.KubernetesClient;
 import com.github.kubesys.KubernetesWatcher;
@@ -18,6 +16,11 @@ public class PodWatcher extends KubernetesWatcher {
 
 	protected final Scheduler scheduler;
 	
+	public PodWatcher(Scheduler scheduler) {
+		super(scheduler.getClient());
+		this.scheduler = scheduler;
+}
+	
 	public PodWatcher(KubernetesClient kubeClient, 
 			      	Scheduler scheduler) {
 		super(kubeClient);
@@ -27,32 +30,18 @@ public class PodWatcher extends KubernetesWatcher {
 	@Override
 	public void doAdded(JsonNode node) {
 		
-		if (node.get("spec").has("nodeName") ||
-				!"aladdin-scheduler".equals(getSchdulerName(node))) {
-			return;
+		if ((node.get("spec").has("schdulerName")
+				&& node.get("spec").get("schdulerName")
+						.asText().equals(scheduler.getName())) 
+				&& !node.get("spec").has("nodeName")) {
+			try {
+				String host = scheduler.doScheduling(node);
+				kubeClient.bindingResource(node, host);
+			} catch (Exception e) {
+				System.err.println(e);
+			}
 		}
 		
-		long start = System.currentTimeMillis();
-		
-		String host = scheduler.doScheduling(node);
-		
-		long end   = System.currentTimeMillis();
-		
-		{
-			ObjectNode annotations = node.get("metadata").has("annotations") 
-						? (ObjectNode) node.get("metadata").get("annotations") 
-							: new ObjectMapper().createObjectNode();
-			annotations.put("schedulerLatency", (end - start) + "ms");
-			((ObjectNode) node.get("metadata")).remove("annotations");
-			((ObjectNode) node.get("metadata")).set("annotations", annotations);
-		}
-		
-		try {
-			kubeClient.updateResource(node);
-			kubeClient.bindingResource(node, host);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 	@Override
@@ -70,12 +59,4 @@ public class PodWatcher extends KubernetesWatcher {
 		
 	}
 
-	protected String getSchdulerName(JsonNode node) {
-		return node.get("spec").get("schedulerName").asText();
-	}
-	
-	protected String getSchedulerType(JsonNode node) {
-		return (node.get("metadata").has("annotations") && node.get("metadata").get("annotations").has("schedulerType"))
-					? node.get("metadata").get("annotations").get("schedulerType").asText() : "queue";
-	}
 }

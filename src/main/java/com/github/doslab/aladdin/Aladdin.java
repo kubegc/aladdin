@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.github.doslab.aladdin.core.Scheduler;
-import com.github.doslab.aladdin.core.impl.FlowBasedScheduler;
-import com.github.doslab.aladdin.core.impl.QueueBasedScheduler;
+import com.github.doslab.aladdin.core.schedulers.FlowBasedScheduler;
+import com.github.doslab.aladdin.core.schedulers.QueueBasedScheduler;
 import com.github.doslab.aladdin.core.utils.StringUtil;
 import com.github.doslab.aladdin.core.watchers.PodWatcher;
 import com.github.kubesys.KubernetesClient;
@@ -35,19 +35,16 @@ public class Aladdin {
 		String schedName = System.getenv("schedulerName");
 		StringUtil.checkNull("schedulerName", schedName);
 		
-		KubernetesClient client = new KubernetesClient(
-									kubeUrl, kubeToken);
-		Map<String, Scheduler> schedulers = initSupportedSchedulers(
-									schedName, client);
+		KubernetesClient client = new KubernetesClient(kubeUrl, kubeToken);
+		Map<String, Scheduler> schedulers = initSchedulers(schedName, client);
 		
 		String schedType = System.getenv("schedulerType");
 		StringUtil.checkItem("schedulerType", schedulers.keySet(), schedType);
 		
-		client.watchResources("Pod", new PodWatcher(
-								client, schedulers.get("schedType")));
+		client.watchResources("Pod", new PodWatcher(schedulers.get("schedType")));
     }
 
-	private static Map<String, Scheduler> initSupportedSchedulers(String schedName, KubernetesClient client)
+	private static Map<String, Scheduler> initSchedulers(String schedName, KubernetesClient client)
 			throws Exception {
 		Map<String, Scheduler> schedulers = new HashMap<>();
 		schedulers.put("queue", new QueueBasedScheduler(client, schedName));

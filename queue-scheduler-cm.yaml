@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: queue-scheduler-cm
+data:
+  #policy: MaxCPU, MaxRam, MinCPU, MinRam
+  policy: MaxCPU

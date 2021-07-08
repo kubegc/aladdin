@@ -1,9 +1,8 @@
 /**
  * Copyright (2021, ) Institute of Software, Chinese Academy of Sciences
  */
-package com.github.doslab.aladdin.core.impl;
+package com.github.doslab.aladdin.core.schedulers;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.github.doslab.aladdin.core.Scheduler;
 import com.github.kubesys.KubernetesClient;
 
@@ -17,8 +16,15 @@ public class FlowBasedScheduler extends Scheduler {
 		super(client, name);
 	}
 
-	public String doScheduling(JsonNode pod) {
-		return null;
+	@Override
+	public void initAlgorithm(String configMap) throws Exception {
+		// ignore here
+	}
+
+
+	@Override
+	public String getSchedulerType() {
+		return "flow";
 	}
 
 }
