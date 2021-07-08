@@ -41,7 +41,7 @@ public class Aladdin {
 		String schedType = System.getenv("schedulerType");
 		StringUtil.checkItem("schedulerType", schedulers.keySet(), schedType);
 		
-		client.watchResources("Pod", new PodWatcher(schedulers.get("schedType")));
+		client.watchResources("Pod", new PodWatcher(schedulers.get(schedType)));
     }
 
 	private static Map<String, Scheduler> initSchedulers(String schedName, KubernetesClient client)
