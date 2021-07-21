@@ -3,6 +3,11 @@
 a flow-based scheduling algorithm, we will share our flow-based algorithm later.
 Note that this project is a prototype.
 
+Now it supports:
+
+- priority
+- overprovisioning
+
 # 2.usage
 
 ## 2.1 apply a algorithm
