@@ -7,7 +7,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.github.doslab.aladdin.core.Algorithm;
 import com.github.doslab.aladdin.core.Scheduler;
 import com.github.doslab.aladdin.core.algorithms.MaxCPUUsageFirst;
-import com.github.kubesys.KubernetesClient;
+
+import io.github.kubesys.kubeclient.KubernetesClient;
 
 /**
  * @author wuheng@iscas.ac.cn

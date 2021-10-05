@@ -11,7 +11,8 @@ import com.github.doslab.aladdin.core.schedulers.FlowBasedScheduler;
 import com.github.doslab.aladdin.core.schedulers.QueueBasedScheduler;
 import com.github.doslab.aladdin.core.utils.StringUtil;
 import com.github.doslab.aladdin.core.watchers.PodWatcher;
-import com.github.kubesys.KubernetesClient;
+
+import io.github.kubesys.kubeclient.KubernetesClient;
 
 /**
  * @author wuheng@iscas.ac.cn

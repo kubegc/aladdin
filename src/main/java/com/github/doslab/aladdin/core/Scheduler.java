@@ -7,7 +7,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.github.kubesys.KubernetesClient;
+
+import io.github.kubesys.kubeclient.KubernetesClient;
 
 /**
  * @author wuheng@iscas.ac.cn

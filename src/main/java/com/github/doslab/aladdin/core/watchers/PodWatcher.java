@@ -5,8 +5,9 @@ package com.github.doslab.aladdin.core.watchers;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.doslab.aladdin.core.Scheduler;
-import com.github.kubesys.KubernetesClient;
-import com.github.kubesys.KubernetesWatcher;
+
+import io.github.kubesys.kubeclient.KubernetesClient;
+import io.github.kubesys.kubeclient.KubernetesWatcher;
 
 /**
  * @author wuheng@iscas.ac.cn
@@ -36,7 +37,7 @@ public class PodWatcher extends KubernetesWatcher {
 				&& !node.get("spec").has("nodeName")) {
 			try {
 				String host = scheduler.doScheduling(node);
-				kubeClient.bindingResource(node, host);
+				client.bindingResource(node, host);
 				System.out.println("bind " + node.get("metadata")
 							.get("name").asText() + " to " + host);
 			} catch (Exception e) {
