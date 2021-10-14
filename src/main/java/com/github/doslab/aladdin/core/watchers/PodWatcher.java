@@ -3,6 +3,8 @@
  */
 package com.github.doslab.aladdin.core.watchers;
 
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.doslab.aladdin.core.Scheduler;
 
@@ -15,6 +17,8 @@ import io.github.kubesys.kubeclient.KubernetesWatcher;
  */
 public class PodWatcher extends KubernetesWatcher {
 
+	protected final static Logger m_logger = Logger.getLogger(PodWatcher.class.getName());
+	
 	protected final Scheduler scheduler;
 	
 	public PodWatcher(Scheduler scheduler) {
@@ -36,10 +40,14 @@ public class PodWatcher extends KubernetesWatcher {
 						.asText().equals(scheduler.getName())
 				&& !node.get("spec").has("nodeName")) {
 			try {
+				long start = System.currentTimeMillis();
 				String host = scheduler.doScheduling(node);
 				client.bindingResource(node, host);
 				System.out.println("bind " + node.get("metadata")
 							.get("name").asText() + " to " + host);
+				long end = System.currentTimeMillis();
+				m_logger.info(node.get("metadata").get("name").asText() 
+						+ ":" + String.format("%.2f", (double)(end - start)));
 			} catch (Exception e) {
 				System.err.println(e);
 			}

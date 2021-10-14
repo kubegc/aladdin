@@ -30,7 +30,7 @@ public class Aladdin {
 		String kubeUrl   = System.getenv("kubeUrl");
 		StringUtil.checkNull("kubeUrl", kubeUrl);
 		
-		String kubeToken = System.getenv("token");
+		String kubeToken = System.getenv("kubeToken");
 		StringUtil.checkNull("token", kubeToken);
 		
 		String schedName = System.getenv("schedulerName");

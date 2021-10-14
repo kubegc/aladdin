@@ -12,7 +12,11 @@ import com.github.doslab.aladdin.core.algorithms.MaxCPUUsageFirst;
  */
 public class AladdinTest  {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		long start = System.currentTimeMillis();
+		Thread.sleep(2000);
+		long end = System.currentTimeMillis();
+		System.out.println(String.format("%.2f", (double)(end - start)));
 	}
 
 }
